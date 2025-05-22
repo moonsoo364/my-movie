@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { searchMovie } from '@/api/tmdb/tmdb';
+import { searchMovie, searchActor } from '@/api/tmdb/tmdb';
 import { searchKobisMovie, searchDetailKobisMovie } from '@/api/kobis/kobis';
 
 searchMovie('미션 임파서블: 파이널 레코닝').then(res=>{
+  console.log('TMDB:', res.data);
+})
+
+searchActor('톰 크루즈').then(res=>{
   console.log('TMDB:', res.data);
 })
 
