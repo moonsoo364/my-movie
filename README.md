@@ -1,4 +1,11 @@
 # my-movie
 
 현재 상영중인 영화 정보를 알려주는 앱,
-kobis, tmdb open api를 활용
+kobis, tmdb open api를 활용한다.
+
+# tmdb 이미지 사이즈 옵션
+
+타입	크기 옵션 (size)
+포스터	w92, w154, w185, w342, w500, w780, original
+백드롭	w300, w780, w1280, original
+프로필 사진	w45, w185, h632, original
