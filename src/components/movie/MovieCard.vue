@@ -3,8 +3,8 @@
     <img
       :src="posterUrl"
       :alt="movie.original_title"
-      height="400"
-      width="300"
+      height="300"
+      width="225"
     />
     <p>{{ movie.title }}</p>
     <p class="movie--original-title">{{ movie.original_title }}</p>
@@ -39,7 +39,7 @@ const posterUrl = computed(() => {
 </script>
 
 <style scoped>
-.movie--details-wrapper {
+/* .movie--details-wrapper {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -49,6 +49,19 @@ const posterUrl = computed(() => {
   padding: 1rem;
   border-radius: 8px;
   background-color: #f9f9f9;
+} */
+ .movie--details-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  width: 300px;
+  min-height: 550px; /* 또는 height: 550px; */
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
 }
 
 img {
@@ -59,7 +72,23 @@ img {
 .movie--original-title {
   font-size: 0.9rem;
   color: #555;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 1줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+ .movie--overview {
+  font-size: 0.85rem;
+  color: #333;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 최대 3줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 
 .movie--overview {
   font-size: 0.85rem;
@@ -74,4 +103,20 @@ img {
   justify-content: space-between;
   width: 100%;
 }
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
 </style>

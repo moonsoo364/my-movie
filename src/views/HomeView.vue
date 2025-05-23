@@ -89,7 +89,6 @@ onBeforeMount(() => {
 .movie-list {
   display: grid;
   grid-template-columns: repeat(3, 0fr);
-  justify-content: center; /* 그리드 전체를 가운데 정렬 */
   gap: 1rem;
   padding: 0;
   list-style: none;
