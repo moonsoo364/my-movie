@@ -58,12 +58,11 @@ const starIcons = computed(() => {
     <router-link
       class="movie--title"
       :to="{ path: '/movie/detail', query: { id: movie.id } }"
-      :title="movie.title"
       >
     {{ movie.title }}
     </router-link>
-    <p 
-      class="movie--original-title"  
+    <p
+      class="movie--original-title"
       :title="movie.original_title">
       {{ movie.original_title }}
     </p>
@@ -82,7 +81,7 @@ const starIcons = computed(() => {
         {{ genre.name }}
       </span>
     </div>
-    <p class="movie--overview">{{ movie.overview }}</p>
+    <p class="movie--overview" :title="movie.overview">{{ movie.overview }}</p>
     <div class="movie--meta">
       <span>평점: {{ formattedVoteAverage }} / 10</span>
       <span>개봉일: {{ movie.release_date }}</span>
@@ -109,6 +108,12 @@ const starIcons = computed(() => {
   width: 100%;
   box-sizing: border-box;
 }
+.movie--title:hover {
+  color: #1e2a38; /* 파란색으로 변경 */
+  transform: scale(1.05); /* 약간 확대 */
+  transition: all 0.3s ease-in-out;
+}
+
 .movie--rating-stars {
   display: flex;
   justify-content: center;
@@ -118,8 +123,30 @@ const starIcons = computed(() => {
   margin-bottom: 0.5rem;
 }
 
+.movie--rating-stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s ease;
+  user-select: none; /* 텍스트 선택 방지 */
+}
+
+.movie--rating-stars:hover .star {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+  pointer-events: none; /* 마우스 이벤트 비활성화 (개별 스타 기준) */
+}
+
 .star {
   color: #ffc107; /* 노란색 */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.star:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
 }
 .movie--genre-tag {
   display: inline-block;
@@ -132,6 +159,8 @@ const starIcons = computed(() => {
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
   opacity: 0.85;
   transition: opacity 0.3s ease;
+  user-select: none; /* 텍스트 선택 방지 */
+
 }
 .movie--genre-tag:hover {
   opacity: 1;

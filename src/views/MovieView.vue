@@ -2,15 +2,16 @@
 import { useMovieStore } from '@/stores/movie';
 import { onBeforeMount, ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import {type MovieSearchQuery} from '@/api/tmdb/types/queryMovie'
+import {type MovieSearchQuery} from '@/api/tmdb/types/query/queryMovie'
 import { TMDB_IMAGE_SIZES } from '@/api/tmdb/consts/tmdbConsts'
 import MovieCard from '@/components/movie/MovieCard.vue'
 const imageSize = ref(TMDB_IMAGE_SIZES.poster[4])
 const imageSizes = TMDB_IMAGE_SIZES.poster
+import { useRoute, useRouter } from 'vue-router'
 
-const movieNm = ref<string>()
-movieNm.value = '미션 임파서블'
 
+const route = useRoute()
+const router = useRouter()
 const movieStore = useMovieStore()
 const {movies} = storeToRefs(movieStore)
 
@@ -20,6 +21,8 @@ const fetchMovies = async (query: MovieSearchQuery) => {
 }
 
 
+const movieNm = ref<string>(route.query.movieTitle as string || '미션 임파서블')
+
 const createMovieQuery = (): MovieSearchQuery => ({
   query: movieNm.value || '',
   include_adult: false,
@@ -27,7 +30,7 @@ const createMovieQuery = (): MovieSearchQuery => ({
   page: 1
 })
 
-const currentPage = ref(0)
+const currentPage =  ref(parseInt(route.query.page as string) || 0)
 const moviesPerPage = 8
 
 const paginatedMovies = computed(() => {
@@ -38,17 +41,34 @@ const paginatedMovies = computed(() => {
 const isPrevDisabled = computed(() => currentPage.value === 0)
 const isNextDisabled = computed(() => (currentPage.value + 1)*moviesPerPage >= movies.value.length)
 
+const updateRoute = () => {
+  router.push({
+    query: {
+      movieTitle: movieNm.value,
+      page: currentPage.value.toString()
+    }
+  })
+}
+const handleSearch = () => {
+  currentPage.value = 0 // 검색 시 첫 페이지로 초기화
+  updateRoute()
+  fetchMovies(createMovieQuery())
+}
+
 const goNext = () => {
   if ((currentPage.value + 1) * moviesPerPage < movies.value.length) {
     currentPage.value++
+    updateRoute()
   }
 }
 
 const goPrev = () => {
   if (currentPage.value > 0) {
     currentPage.value--
+    updateRoute()
   }
 }
+
 
 onBeforeMount(() => {
   fetchMovies(createMovieQuery())
@@ -65,9 +85,9 @@ onBeforeMount(() => {
         type="text"
         class="movie-input"
         placeholder="영화 제목을 입력해주세요"
-        @keyup.enter="fetchMovies(createMovieQuery())"
+        @keyup.enter="handleSearch"
       >
-      <button class="movie-button" @click="fetchMovies(createMovieQuery())">검색</button>
+      <button class="movie-button" @click="handleSearch">검색</button>
     </div>
     <div class="size-controls">
       <label for="poster-size">포스터 해상도:</label>
@@ -85,7 +105,7 @@ onBeforeMount(() => {
           <MovieCard :movie="movie" :image-size="imageSize"/>
         </li>
       </ul>
-    </div> 
+    </div>
 
   </main>
 </template>
