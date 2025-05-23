@@ -11,7 +11,7 @@ kobis, tmdb open api를 활용한다.
 4. 배우 정보 조회
 5. 회사 정보 조회
 ## 영화 트레일러 URL
-Api에 응답값의 key를 아래 url에 포함시켜 요청한다. 
+Api에 응답값의 key를 아래 url에 포함시켜 
 `https://www.youtube.com/watch?v=${key}`
 ## 이미지 조회하기 위한 url
 이미지를 조회하기 위한 URL은 아래와 같이 구성된다.
