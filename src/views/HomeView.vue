@@ -28,7 +28,7 @@ const createMovieQuery = (): MovieSearchQuery => ({
 })
 
 const currentPage = ref(0)
-const moviesPerPage = 3
+const moviesPerPage = 4
 const paginatedMovies = computed(() => {
   const start = currentPage.value * moviesPerPage
   return movies.value.slice(start, start + moviesPerPage)
@@ -53,22 +53,27 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main>
-    <h2>영화 목록</h2>
-    <div>
+  <main class="movie-main">
+    <h2 class="movie-title">영화 목록</h2>
+    <div class="search-controls">
       <input
-      v-model="movieNm"
-      type="text"
-      placeholder="영화 제목을 입력해주세요"
-      @keyup.enter="fetchMovies(createMovieQuery())"
-    >
-    <button @click="fetchMovies(createMovieQuery())">검색</button>
+        v-model="movieNm"
+        type="text"
+        class="movie-input"
+        placeholder="영화 제목을 입력해주세요"
+        @keyup.enter="fetchMovies(createMovieQuery())"
+      >
+      <button class="movie-button" @click="fetchMovies(createMovieQuery())">검색</button>
     </div>
-    <div>
-      <label for="poster-size">포스터 사이즈:</label>
-      <select id="poster-size" v-model="imageSize">
+    <div class="size-controls">
+      <label for="poster-size">포스터 해상도:</label>
+      <select id="poster-size" v-model="imageSize" class="poster-select">
         <option v-for="size in imageSizes" :key="size" :value="size">{{ size }}</option>
       </select>
+    </div>
+        <div class="pagination-controls">
+      <button class="slide-btn" @click="goPrev">&lt;</button>
+      <button class="slide-btn" @click="goNext">&gt;</button>
     </div>
     <div class="movie-card-wrap">
       <ul class="movie-list">
@@ -78,34 +83,106 @@ onBeforeMount(() => {
       </ul>
     </div> 
 
-    <div class="pagination-controls">
-      <button class="slide-btn" @click="goPrev">&lt;</button>
-      <button class="slide-btn" @click="goNext">&gt;</button>
-    </div>
   </main>
 </template>
 
+
 <style scoped>
+.movie-main {
+  padding: 2rem;
+  background-color: #f4f6f8;
+  color: #1e2a38;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.movie-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #1e2a38;
+}
+
+.search-controls {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.movie-input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #1e2a38;
+}
+
+.movie-input::placeholder {
+  color: #999;
+}
+
+.movie-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #3b5998;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.movie-button:hover {
+  background-color: #2d4373;
+}
+
+.size-controls {
+  margin-bottom: 1rem;
+}
+
+.poster-select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #1e2a38;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-left: 0.5rem;
+}
+
+.movie-card-wrap {
+  margin-top: 2rem;
+}
+
 .movie-list {
   display: grid;
-  grid-template-columns: repeat(3, 0fr);
-  gap: 1rem;
-  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
   list-style: none;
-  
+  padding: 0;
+}
+
+.pagination-controls {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .slide-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   font-size: 1.5rem;
   margin: 0 0.5rem;
-  cursor: pointer;
+  background-color: #ffffff;
+  color: #3b5998;
   border: 1px solid #ccc;
-  background-color: white;
-  border-radius: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .slide-btn:hover {
-  background-color: #f0f0f0;
+  background-color: #e1ecf4;
 }
 </style>
