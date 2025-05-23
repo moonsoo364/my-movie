@@ -2,7 +2,7 @@
 import { useMovieStore } from '@/stores/movie';
 import { onBeforeMount, ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import {type MovieSearchQuery} from '@/api/tmdb/types/queryMovie'
+import {type MovieSearchQuery} from '@/api/tmdb/types/query/queryMovie'
 import { TMDB_IMAGE_SIZES } from '@/api/tmdb/consts/tmdbConsts'
 import MovieCard from '@/components/movie/MovieCard.vue'
 const imageSize = ref(TMDB_IMAGE_SIZES.poster[4])

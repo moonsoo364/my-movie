@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import { searchMovie } from '@/api/tmdb/tmdb'
-import {type MovieSearchQuery} from '@/api/tmdb/types/queryMovie'
+import {type MovieSearchQuery} from '@/api/tmdb/types/query/queryMovie'
 import { type Movie } from '@/api/tmdb/types/movie'
 import { ref } from 'vue'
 
