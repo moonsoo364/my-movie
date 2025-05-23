@@ -1,6 +1,7 @@
 # my-movie
 
 영화 및 배우 를 검색하는 웹 앱.
+
 kobis, tmdb open api를 활용한다.
 
 # tmdb 
