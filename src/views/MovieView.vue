@@ -13,7 +13,8 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const movieStore = useMovieStore()
-const {movies} = storeToRefs(movieStore)
+
+const { movies, total_pages, total_results} = storeToRefs(movieStore)
 
 //컴포넌트 메서드로 래핑
 const fetchMovies = async (query: MovieSearchQuery) => {
@@ -31,13 +32,15 @@ const createMovieQuery = (): MovieSearchQuery => ({
 })
 
 const currentPage =  ref(parseInt(route.query.page as string) || 0)
-const moviesPerPage = 8
+const moviesPerPage = 10
 
+
+const totalPages = computed(() => total_pages.value || 0)
+const totalResults = computed(() => total_results.value || 0)
 const paginatedMovies = computed(() => {
   const start = currentPage.value * moviesPerPage
   return movies.value.slice(start, start + moviesPerPage)
 })
-
 const isPrevDisabled = computed(() => currentPage.value === 0)
 const isNextDisabled = computed(() => (currentPage.value + 1)*moviesPerPage >= movies.value.length)
 
@@ -95,7 +98,12 @@ onBeforeMount(() => {
         <option v-for="size in imageSizes" :key="size" :value="size">{{ size }}</option>
       </select>
     </div>
-        <div class="pagination-controls">
+    <div class="pagination-controls">
+      <div class="page-info">
+        <span>{{ totalPages }} / </span>
+        <span>{{ totalResults }} / </span>
+        <span>{{ currentPage }}</span>
+      </div>
       <button class="slide-btn" @click="goPrev" :disabled = "isPrevDisabled">&lt;</button>
       <button class="slide-btn" @click="goNext" :disabled = "isNextDisabled">&gt;</button>
     </div>
@@ -143,6 +151,13 @@ onBeforeMount(() => {
   border-radius: 6px;
   background-color: #ffffff;
   color: #1e2a38;
+  width: 50%;
+}
+/* PC 이상 화면에서 */
+@media (min-width: 768px) {
+  .movie-input {
+    max-width: 400px; /* 최대 너비 지정 */
+  }
 }
 
 .movie-input::placeholder {
