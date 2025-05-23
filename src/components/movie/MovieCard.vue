@@ -1,33 +1,5 @@
-<template>
-  <article class="movie--details-wrapper">
-    <img
-      :src="posterUrl"
-      :alt="movie.original_title"
-      height="300"
-      width="225"
-    />
-    <p>{{ movie.title }}</p>
-    <p class="movie--original-title">{{ movie.original_title }}</p>
-    <div class="movie--genres">
-  <span
-    v-for="(genre, index) in genreTags"
-    :key="index"
-    class="movie--genre-tag"
-    :style="{ backgroundColor: genre.color }"
-  >
-    {{ genre.name }}
-  </span>
-</div>
-    <p class="movie--overview">{{ movie.overview }}</p>
-    <div class="movie--meta">
-      <span>평점: {{ movie.vote_average }} / 10</span>
-      <span>개봉일: {{ movie.release_date }}</span>
-    </div>
-  </article>
-</template>
-
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed} from 'vue'
 import type { Movie } from '@/api/tmdb/types/movie'
 import { genreMap } from '@/api/tmdb/types/movieGenre' // ✅ 실제 값 import
 import type { PropType } from 'vue'
@@ -56,9 +28,99 @@ const genreTags = computed(() => {
   })
 })
 
+const formattedVoteAverage = computed(() =>{
+  return props.movie.vote_average !== undefined
+  ? props.movie.vote_average.toFixed(2)  : 'N/A'
+})
+
+const starIcons = computed(() => {
+  const rating = props.movie.vote_average || 0
+  const fullstars = Math.floor(rating / 2)
+  const halfStar = rating % 2 >= 1 ? 1: 0
+  const emptyStars = 5 - fullstars - halfStar
+  return {
+    full: fullstars,
+    half: halfStar,
+    empty: emptyStars
+  }
+})
+
 </script>
 
+<template>
+  <article class="movie--details-wrapper">
+    <img
+      :src="posterUrl"
+      :alt="movie.original_title"
+      height="300"
+      width="225"
+    />
+    <router-link
+      class="movie--title"
+      :to="{ path: '/movie/detail', query: { id: movie.id } }"
+      :title="movie.title"
+      >
+    {{ movie.title }}
+    </router-link>
+    <p 
+      class="movie--original-title"  
+      :title="movie.original_title">
+      {{ movie.original_title }}
+    </p>
+    <div class="movie--rating-stars">
+      <span v-for="n in starIcons.full" :key="'full' + n" class="star">★</span>
+      <span v-if="starIcons.half" class="star">☆</span>
+      <span v-for="n in starIcons.empty" :key="'empty' + n" class="star">☆</span>
+    </div>
+    <div class="movie--genres">
+      <span
+        v-for="(genre, index) in genreTags"
+        :key="index"
+        class="movie--genre-tag"
+        :style="{ backgroundColor: genre.color }"
+      >
+        {{ genre.name }}
+      </span>
+    </div>
+    <p class="movie--overview">{{ movie.overview }}</p>
+    <div class="movie--meta">
+      <span>평점: {{ formattedVoteAverage }} / 10</span>
+      <span>개봉일: {{ movie.release_date }}</span>
+    </div>
+  </article>
+</template>
+
 <style scoped>
+.movie--title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  width: 100%;
+  box-sizing: border-box;
+}
+.movie--rating-stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  color: #ffc107; /* 노란색 */
+}
 .movie--genre-tag {
   display: inline-block;
   color: white;
@@ -113,6 +175,9 @@ const genreTags = computed(() => {
   -webkit-line-clamp: 3; /* 최대 3줄로 제한 */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .movie--meta {

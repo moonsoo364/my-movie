@@ -28,11 +28,15 @@ const createMovieQuery = (): MovieSearchQuery => ({
 })
 
 const currentPage = ref(0)
-const moviesPerPage = 4
+const moviesPerPage = 8
+
 const paginatedMovies = computed(() => {
   const start = currentPage.value * moviesPerPage
   return movies.value.slice(start, start + moviesPerPage)
 })
+
+const isPrevDisabled = computed(() => currentPage.value === 0)
+const isNextDisabled = computed(() => (currentPage.value + 1)*moviesPerPage >= movies.value.length)
 
 const goNext = () => {
   if ((currentPage.value + 1) * moviesPerPage < movies.value.length) {
@@ -72,8 +76,8 @@ onBeforeMount(() => {
       </select>
     </div>
         <div class="pagination-controls">
-      <button class="slide-btn" @click="goPrev">&lt;</button>
-      <button class="slide-btn" @click="goNext">&gt;</button>
+      <button class="slide-btn" @click="goPrev" :disabled = "isPrevDisabled">&lt;</button>
+      <button class="slide-btn" @click="goNext" :disabled = "isNextDisabled">&gt;</button>
     </div>
     <div class="movie-card-wrap">
       <ul class="movie-list">
@@ -88,6 +92,9 @@ onBeforeMount(() => {
 
 
 <style scoped>
+
+
+
 .movie-main {
   padding: 2rem;
   background-color: #f4f6f8;
@@ -157,10 +164,11 @@ onBeforeMount(() => {
 
 .movie-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   list-style: none;
   padding: 0;
+  justify-content: center;
 }
 
 .pagination-controls {
@@ -184,5 +192,15 @@ onBeforeMount(() => {
 
 .slide-btn:hover {
   background-color: #e1ecf4;
+}
+
+.slide-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ✅ disabled 상태일 때 hover 효과 제거 */
+.slide-btn:disabled:hover {
+  background-color: #ffffff; /* 기본 배경색으로 고정 */
 }
 </style>
