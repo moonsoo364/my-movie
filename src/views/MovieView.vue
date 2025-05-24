@@ -93,20 +93,24 @@ onBeforeMount(() => {
       <button class="movie-button" @click="handleSearch">검색</button>
     </div>
     <div class="size-controls">
-      <label for="poster-size">포스터 해상도:</label>
+      <label for="poster-size">포스터 해상도</label>
       <select id="poster-size" v-model="imageSize" class="poster-select">
         <option v-for="size in imageSizes" :key="size" :value="size">{{ size }}</option>
       </select>
     </div>
     <div class="pagination-controls">
       <div class="page-info">
-        <span>{{ totalPages }} / </span>
-        <span>{{ totalResults }} / </span>
-        <span>{{ currentPage }}</span>
+        <span>현재 페이지: {{ currentPage + 1 }} / {{ Math.ceil(movies.length / moviesPerPage) }}</span>
+        <span>전체 결과: {{ totalResults }}개</span>
       </div>
-      <button class="slide-btn" @click="goPrev" :disabled = "isPrevDisabled">&lt;</button>
-      <button class="slide-btn" @click="goNext" :disabled = "isNextDisabled">&gt;</button>
+      <div class="pagination-buttons">
+        <button class="slide-btn" @click="goPrev" v-show="isPrevDisabled">&lt;&lt;</button>
+        <button class="slide-btn" @click="goPrev" :disabled="isPrevDisabled">&lt;</button>
+        <button class="slide-btn" @click="goNext" :disabled="isNextDisabled">&gt;</button>
+        <button class="slide-btn" @click="goNext" v-show="isNextDisabled">&gt;&gt;</button>
+      </div>
     </div>
+
     <div class="movie-card-wrap">
       <ul class="movie-list">
         <li v-for="movie in paginatedMovies" :key="movie.id">
@@ -120,17 +124,46 @@ onBeforeMount(() => {
 
 
 <style scoped>
+.pagination-controls {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column; /* 행으로 분리 */
+  align-items: center;
+  gap: 0.8rem;
+}
 
 
+.page-info {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center;
+  font-size: 0.95rem;
+  margin-right: 1rem;
+  color: #555;
+}
+
+.page-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 1rem;
+}
 
 .movie-main {
   padding: 2rem;
   background-color: #f4f6f8;
   color: #1e2a38;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .movie-title {
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.75rem;
   margin-bottom: 1rem;
   color: #1e2a38;
@@ -144,14 +177,15 @@ onBeforeMount(() => {
 }
 
 .movie-input {
-  flex: 1;
+  font-family: 'Noto Sans', sans-serif;
   padding: 0.6rem 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #ffffff;
   color: #1e2a38;
-  width: 50%;
+  width: 80%;
+  max-width: 80%; /* 기본적으로 꽉 차게 */
 }
 /* PC 이상 화면에서 */
 @media (min-width: 768px) {
@@ -173,6 +207,7 @@ onBeforeMount(() => {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
 }
 
 .movie-button:hover {
@@ -191,6 +226,8 @@ onBeforeMount(() => {
   border: 1px solid #ccc;
   border-radius: 6px;
   margin-left: 0.5rem;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1rem;
 }
 
 .movie-card-wrap {
@@ -205,24 +242,16 @@ onBeforeMount(() => {
   padding: 0;
   justify-content: center;
 }
-
-.pagination-controls {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .slide-btn {
-  padding: 0.5rem 1.2rem;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
+  padding: 0.3rem 0.8rem; /* 버튼 크기 줄임 */
+  font-size: 1.2rem;       /* 폰트 크기 감소 */
+  margin: 0 0.3rem;        /* 버튼 간 간격 축소 */
   background-color: #ffffff;
   color: #3b5998;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 4px;      /* 둥근 정도도 살짝 줄임 */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .slide-btn:hover {
@@ -230,7 +259,7 @@ onBeforeMount(() => {
 }
 
 .slide-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;            /* 비활성화된 버튼 더 희미하게 */
   cursor: not-allowed;
 }
 
