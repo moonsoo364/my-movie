@@ -6,10 +6,15 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink class="route"to="/">Movie</RouterLink>
-        <RouterLink class="route"to="/boxoffice">Boxoffice</RouterLink>
-        <RouterLink class="route"to="/company">Company</RouterLink>
-        <RouterLink class="route"to="/person">Person</RouterLink>
+        <span >
+            <img class="icon-img" src="@/assets/img/app/movie.png" alt="icon-movie" />
+            <RouterLink class="page-title" to="/">My Movie</RouterLink>
+        </span>
+        <RouterLink class="route" to="/">Movie</RouterLink>
+        <RouterLink class="route" to="/boxoffice">Boxoffice</RouterLink>
+        <RouterLink class="route" to="/company">Company</RouterLink>
+        <RouterLink class="route" to="/person">Person</RouterLink>
+        <img class="icon-img" src="@/assets/img/app/hamburger.png" alt="icon-hamberger" />
       </nav>
     </div>
   </header>
@@ -18,7 +23,13 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style scoped>
-
+.icon-wrapper{
+  display: flex;
+  justify-content: flex-end;
+}
+.icon-img{
+  width: 36px;
+}
 .route {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
@@ -62,6 +73,7 @@ nav {
   }
 
   .route {
+    display: none;
     text-align: center;
     width: 100%;
   }
@@ -84,7 +96,6 @@ nav a.router-link-exact-active {
   background-color: #e1ecf4;
   color: #0d253f;
 }
-
 
 
 </style>
