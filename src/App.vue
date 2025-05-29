@@ -6,15 +6,15 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <span >
+        <!-- <span >
             <img class="icon-img" src="@/assets/img/app/movie.png" alt="icon-movie" />
             <RouterLink class="page-title" to="/">My Movie</RouterLink>
-        </span>
+        </span> -->
         <RouterLink class="route" to="/">Movie</RouterLink>
         <RouterLink class="route" to="/boxoffice">Boxoffice</RouterLink>
         <RouterLink class="route" to="/company">Company</RouterLink>
         <RouterLink class="route" to="/person">Person</RouterLink>
-        <img class="icon-img" src="@/assets/img/app/hamburger.png" alt="icon-hamberger" />
+        <!-- <img class="icon-img" src="@/assets/img/app/hamburger.png" alt="icon-hamberger" /> -->
       </nav>
     </div>
   </header>
