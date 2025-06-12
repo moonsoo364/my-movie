@@ -1,15 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { searchGitRepos } from '@/api/back/back';
+import { useRoute, useRouter } from 'vue-router';
 
-const repoName = ref<string>("vue");
-const respData = ref<Array<Record<string, string>>>([]);
+const route = useRoute()
+const router = useRouter()
 
+const repoName = ref<string>(route.query.repo as string || '')
+const respData = ref<Array<Record<string, string>>>([])
+
+watch(()=> route.query.repo, (newRepo) =>{
+  console.log(newRepo);
+  repoName.value = (newRepo as string) || ''
+})
+onMounted(()=>{
+  if(repoName.value){
+    search(repoName.value);
+  }
+})
 const search = async (repo: string) => {
   try {
     const res = await searchGitRepos(repo);
     console.log(res);
 
+
+    router.replace({query : {repo}});
     respData.value = res.data ?? [];
   } catch (err) {
     console.log(err);

@@ -11,6 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
             <RouterLink class="page-title" to="/">My Movie</RouterLink>
         </span> -->
         <RouterLink class="route" to="/">Movie</RouterLink>
+        <RouterLink class="route" to="/github">Github</RouterLink>
         <RouterLink class="route" to="/boxoffice">Boxoffice</RouterLink>
         <RouterLink class="route" to="/company">Company</RouterLink>
         <RouterLink class="route" to="/person">Person</RouterLink>
