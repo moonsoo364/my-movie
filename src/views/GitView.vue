@@ -22,8 +22,7 @@ const search = async (repo: string) => {
   try {
     const res = await searchGitRepos(repo);
     console.log(res);
-
-
+    
     router.replace({query : {repo}});
     respData.value = res.data ?? [];
   } catch (err) {
